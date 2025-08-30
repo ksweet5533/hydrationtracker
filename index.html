@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Water Tracker PWA Dark Mode Clean</title>
+<title>Water Tracker PWA Clean Dark</title>
 <style>
   body {
     margin: 0;
@@ -35,13 +35,14 @@
 
   svg.progress-ring-svg {
     margin-bottom: 40px;
-    filter: drop-shadow(0 4px 8px rgba(153, 194, 255, 0.75));
+    filter: drop-shadow(0 4px 10px rgba(153, 194, 255, 0.8));
   }
 
   circle.background-ring {
     stroke: white;
-    stroke-width: 9;
-    fill: white; /* White filled inside ring */
+    stroke-width: 8;
+    fill: white;
+    r: 40;
   }
 
   circle.progress-ring {
@@ -54,14 +55,14 @@
 
   text.progress-text {
     fill: #111184;
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: 700;
-    letter-spacing: 0.7px;
+    letter-spacing: 0.6px;
   }
 
   text.progress-subtext {
     fill: #555fad;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 600;
     letter-spacing: 0.6px;
   }
@@ -70,7 +71,7 @@
     display: flex;
     justify-content: center;
     gap: 22px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
 
   .btn-container {
@@ -79,30 +80,30 @@
 
   button.option-btn,
   button.custom-btn {
-    background-color: rgba(153, 194, 255, 0.17);
+    background-color: rgba(153, 194, 255, 0.2);
     border: 1.8px solid #99c2ff;
     border-radius: 26px;
-    padding: 12px 22px 12px 38px;
+    padding: 12px 18px 12px 38px;
     font-size: 1.05rem;
     font-weight: 600;
     color: #cce0ff;
-    box-shadow: 0 4px 15px rgba(153, 194, 255, 0.33);
+    box-shadow: 0 4px 16px rgba(153, 194, 255, 0.35);
     backdrop-filter: blur(12px);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     user-select: none;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
     min-width: 96px;
     position: relative;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
   }
 
   button.option-btn:hover,
   button.option-btn:focus,
   button.custom-btn:hover,
   button.custom-btn:focus {
-    background-color: rgba(153, 194, 255, 0.4);
+    background-color: rgba(153, 194, 255, 0.45);
     border-color: #e6f0ff;
     outline: none;
   }
@@ -118,24 +119,20 @@
     width: 12px;
     height: 18px;
     fill: #cce0ff;
-    filter: drop-shadow(0 0 2px #80aaff);
+    filter: drop-shadow(0 0 3px #80aaff);
   }
 
   .custom-container {
     margin-top: 12px;
-    display: none;
-    justify-content: center;
-    gap: 14px;
-  }
-
-  .custom-container.active {
     display: flex;
+    justify-content: center;
+    gap: 12px;
   }
 
   input.custom-input {
-    width: 90px;
+    width: 110px;
     padding: 12px 14px;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     border-radius: 20px;
     border: 1.8px solid #335577;
     background-color: #1c2376;
@@ -194,7 +191,7 @@
         class="background-ring"
         cx="50"
         cy="50"
-        r="45"
+        r="40"
       ></circle>
       <circle
         class="progress-ring"
@@ -207,7 +204,7 @@
       <text
         class="progress-text"
         x="50"
-        y="40"
+        y="37"
         text-anchor="middle"
         dominant-baseline="central"
       >
@@ -269,11 +266,7 @@
       </div>
     </div>
 
-    <button class="custom-btn" id="customToggleBtn" type="button" aria-expanded="false" aria-controls="customInputContainer" aria-label="Show custom amount input">
-      Custom Amount
-    </button>
-
-    <div class="custom-container" id="customInputContainer">
+    <div class="custom-container">
       <input
         class="custom-input"
         type="number"
@@ -305,8 +298,6 @@
     const buttons = document.querySelectorAll("button.option-btn");
     const customInput = document.querySelector("input.custom-input");
     const customAddBtn = document.querySelector("button.custom-add");
-    const customToggleBtn = document.getElementById("customToggleBtn");
-    const customInputContainer = document.getElementById("customInputContainer");
 
     function updateProgress() {
       const progress = intake / dailyGoal;
@@ -336,14 +327,6 @@
         customInput.value = "";
       } else {
         alert("Please enter a positive whole number.");
-      }
-    });
-
-    customToggleBtn.addEventListener("click", () => {
-      const isActive = customInputContainer.classList.toggle("active");
-      customToggleBtn.setAttribute("aria-expanded", isActive ? "true" : "false");
-      if (isActive) {
-        customInput.focus();
       }
     });
 
