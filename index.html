@@ -70,13 +70,16 @@
   .buttons {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 18px;
     margin-bottom: 20px;
     flex-wrap: nowrap;
   }
 
   .btn-container {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   button.option-btn,
@@ -84,7 +87,7 @@
     background-color: rgba(153, 194, 255, 0.2);
     border: 1.8px solid #99c2ff;
     border-radius: 26px;
-    padding: 12px 18px 12px 42px; /* increased left padding for icon spacing */
+    padding: 6px 18px 8px 18px;
     font-size: 1.05rem;
     font-weight: 600;
     color: #cce0ff;
@@ -95,10 +98,12 @@
     align-items: center;
     justify-content: center;
     user-select: none;
-    min-width: 96px;
+    min-width: 64px;
     position: relative;
     transition: background-color 0.3s ease, border-color 0.3s ease;
-    white-space: nowrap; /* keep text on one line */
+    white-space: nowrap;
+    flex-direction: column;
+    row-gap: 4px;
   }
 
   button.option-btn:hover,
@@ -111,19 +116,16 @@
   }
 
   .waterdrops {
-    position: absolute;
-    left: 14px;
     display: flex;
-    gap: 4px;
-    top: 50%;
-    transform: translateY(-50%);
+    gap: 2px;
+    justify-content: center;
   }
 
   .waterdrop-icon {
-    width: 12px;
-    height: 18px;
+    width: 6px;
+    height: 9px;
     fill: #cce0ff;
-    filter: drop-shadow(0 0 3px #80aaff);
+    filter: drop-shadow(0 0 1.5px #80aaff);
   }
 
   .custom-container {
