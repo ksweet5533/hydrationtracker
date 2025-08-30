@@ -4,37 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hydration Meter</title>
-    <meta name="theme-color" content="#3993FF">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden;
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-touch-callout: none;
+            overflow-x: hidden; user-select: none;
         }
-        
-        #root {
-            width: 100vw;
-            height: 100vh;
-        }
-        
-        /* Tailwind-like utilities */
+        #root { width: 100vw; height: 100vh; }
         .min-h-screen { min-height: 100vh; }
         .bg-black { background-color: #000000; }
         .text-white { color: #ffffff; }
@@ -42,19 +21,13 @@
         .absolute { position: absolute; }
         .fixed { position: fixed; }
         .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
-        .top-0 { top: 0; }
-        .right-0 { right: 0; }
-        .left-0 { left: 0; }
         .z-10 { z-index: 10; }
-        .z-20 { z-index: 20; }
-        .z-30 { z-index: 30; }
+        .z-40 { z-index: 40; }
         .z-50 { z-index: 50; }
         .pt-12 { padding-top: 3rem; }
-        .pt-4 { padding-top: 1rem; }
         .pb-4 { padding-bottom: 1rem; }
         .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
         .px-4 { padding-left: 1rem; padding-right: 1rem; }
-        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
         .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
         .p-4 { padding: 1rem; }
         .p-2 { padding: 0.5rem; }
@@ -65,8 +38,7 @@
         .mb-2 { margin-bottom: 0.5rem; }
         .mt-2 { margin-top: 0.5rem; }
         .mt-4 { margin-top: 1rem; }
-        .ml-4 { margin-left: 1rem; }
-        .mr-4 { margin-right: 1rem; }
+        .ml-12 { margin-left: 3rem; }
         .mx-6 { margin-left: 1.5rem; margin-right: 1.5rem; }
         .flex { display: flex; }
         .flex-col { flex-direction: column; }
@@ -74,11 +46,9 @@
         .items-start { align-items: flex-start; }
         .justify-center { justify-content: center; }
         .justify-between { justify-content: space-between; }
-        .justify-end { justify-content: flex-end; }
         .gap-1 { gap: 0.25rem; }
         .gap-2 { gap: 0.5rem; }
         .gap-3 { gap: 0.75rem; }
-        .gap-4 { gap: 1rem; }
         .text-sm { font-size: 0.875rem; }
         .text-lg { font-size: 1.125rem; }
         .text-xl { font-size: 1.25rem; }
@@ -102,8 +72,6 @@
         .h-6 { height: 1.5rem; }
         .w-8 { width: 2rem; }
         .h-8 { height: 2rem; }
-        .w-10 { width: 2.5rem; }
-        .h-10 { height: 2.5rem; }
         .w-12 { width: 3rem; }
         .h-12 { height: 3rem; }
         .w-64 { width: 16rem; }
@@ -115,298 +83,96 @@
         .grid { display: grid; }
         .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
         .grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
-        .grid-cols-6 { grid-template-columns: repeat(6, 1fr); }
         .text-center { text-align: center; }
         .border { border-width: 1px; }
-        .rounded-sm { border-radius: 0.125rem; }
         .rounded-lg { border-radius: 0.5rem; }
         .rounded-xl { border-radius: 0.75rem; }
         .rounded-2xl { border-radius: 1rem; }
         .rounded-full { border-radius: 9999px; }
         .overflow-hidden { overflow: hidden; }
-        .overflow-y-auto { overflow-y: auto; }
-        .transform { transform: translateZ(0); }
         .transition-all { transition: all 0.3s; }
-        .transition-transform { transition: transform 0.3s; }
         .duration-200 { transition-duration: 0.2s; }
         .duration-300 { transition-duration: 0.3s; }
         .duration-700 { transition-duration: 0.7s; }
-        .ease-out { transition-timing-function: cubic-bezier(0, 0, 0.2, 1); }
         .cursor-pointer { cursor: pointer; }
-        
-        /* Custom styles */
-        .bg-gradient-to-b {
-            background: linear-gradient(to bottom, rgba(30, 58, 138, 0.2), #000000, #000000);
-        }
-        
-        .bg-gray-800\/60 {
-            background-color: rgba(31, 41, 55, 0.6);
-            backdrop-filter: blur(8px);
-        }
-        
-        .bg-gray-900\/95 {
-            background-color: rgba(17, 24, 39, 0.95);
-            backdrop-filter: blur(12px);
-        }
-        
-        .bg-blue-600\/80 {
-            background-color: rgba(37, 99, 235, 0.8);
-            backdrop-filter: blur(8px);
-        }
-        
-        .bg-gray-700\/60 {
-            background-color: rgba(55, 65, 81, 0.6);
-            backdrop-filter: blur(8px);
-        }
-        
-        .bg-green-600\/20 {
-            background-color: rgba(22, 163, 74, 0.2);
-        }
-        
+        .bg-gradient-to-b { background: linear-gradient(to bottom, rgba(30, 58, 138, 0.2), #000000, #000000); }
+        .bg-gray-800\/60 { background-color: rgba(31, 41, 55, 0.6); backdrop-filter: blur(8px); }
+        .bg-gray-900\/95 { background-color: rgba(17, 24, 39, 0.95); backdrop-filter: blur(12px); }
+        .bg-blue-600\/80 { background-color: rgba(37, 99, 235, 0.8); backdrop-filter: blur(8px); }
+        .bg-gray-700\/60 { background-color: rgba(55, 65, 81, 0.6); backdrop-filter: blur(8px); }
+        .bg-green-600\/20 { background-color: rgba(22, 163, 74, 0.2); }
+        .bg-blue-600\/20 { background-color: rgba(37, 99, 235, 0.2); }
+        .bg-gray-800\/40 { background-color: rgba(31, 41, 55, 0.4); }
         .border-gray-700 { border-color: #374151; }
         .border-gray-600 { border-color: #4b5563; }
         .border-green-500\/30 { border-color: rgba(34, 197, 94, 0.3); }
+        .border-blue-500\/30 { border-color: rgba(59, 130, 246, 0.3); }
         .border-white { border-color: #ffffff; }
         .border-blue-500 { border-color: #3b82f6; }
-        
         .active\:scale-95:active { transform: scale(0.95); }
         .hover\:bg-gray-700\/60:hover { background-color: rgba(55, 65, 81, 0.6); }
         .hover\:bg-blue-500\/80:hover { background-color: rgba(59, 130, 246, 0.8); }
-        .hover\:bg-gray-800\/80:hover { background-color: rgba(31, 41, 55, 0.8); }
-        
+        .hover\:bg-gray-800\/60:hover { background-color: rgba(31, 41, 55, 0.6); }
         .focus\:outline-none:focus { outline: none; }
         .focus\:border-blue-500:focus { border-color: #3b82f6; }
-        
         .disabled\:bg-gray-600:disabled { background-color: #4b5563; }
         .disabled\:opacity-50:disabled { opacity: 0.5; }
-        
         .placeholder-gray-400::placeholder { color: #9ca3af; }
-        
         .h-1 { height: 0.25rem; }
         .w-3 { width: 0.75rem; }
         .m-0\.5 { margin: 0.125rem; }
         .bg-white { background-color: #ffffff; }
-        
         .translate-x-0 { transform: translateX(0); }
-        .translate-x-full { transform: translateX(100%); }
-        .-translate-x-full { transform: translateX(-100%); }
-        
-        .droplet-icon {
-            width: 2rem;
-            height: 2rem;
-            fill: #60a5fa;
-        }
-
+        .translate-x-6 { transform: translateX(1.5rem); }
+        .bg-blue-600 { background-color: #2563eb; }
+        .bg-gray-600 { background-color: #4b5563; }
+        .droplet-icon { width: 2rem; height: 2rem; fill: #60a5fa; }
         .plus-icon, .menu-icon, .settings-icon, .x-icon, .arrow-icon, .bell-icon {
-            width: 1.25rem;
-            height: 1.25rem;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
+            width: 1.25rem; height: 1.25rem; stroke: currentColor; fill: none; stroke-width: 2;
         }
-
-        .menu-icon, .x-icon {
-            width: 1.5rem;
-            height: 1.5rem;
-        }
-
-        .settings-icon, .bell-icon {
-            width: 1.5rem;
-            height: 1.5rem;
-        }
-
-        /* Selected hour button */
-        .hour-selected {
-            background-color: rgba(37, 99, 235, 0.8) !important;
-            border-color: #3b82f6 !important;
-            color: #ffffff !important;
-        }
-
-        /* Slide menu animation */
-        .slide-menu {
-            transform: translateX(-100%);
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .slide-menu.open {
-            transform: translateX(0);
-        }
+        .menu-icon, .x-icon { width: 1.5rem; height: 1.5rem; }
+        .settings-icon, .bell-icon { width: 1.5rem; height: 1.5rem; }
+        .hour-selected { background-color: rgba(37, 99, 235, 0.8) !important; border-color: #3b82f6 !important; color: #ffffff !important; }
+        .slide-menu { transform: translateX(-100%); transition: transform 0.3s ease-in-out; }
+        .slide-menu.open { transform: translateX(0); }
+        .space-y-2 > * + * { margin-top: 0.5rem; }
     </style>
 </head>
 <body>
-    <div id="root"></div>
-
+    <div id="root">Loading...</div>
     <script type="text/babel">
         const { useState, useEffect } = React;
-
-        // Simple icons as SVG components
-        const Droplets = () => (
-            <svg className="droplet-icon" viewBox="0 0 24 24">
-                <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>
-            </svg>
-        );
-
-        const Plus = () => (
-            <svg className="plus-icon" viewBox="0 0 24 24">
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-        );
-
-        const Menu = () => (
-            <svg className="menu-icon" viewBox="0 0 24 24">
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-        );
-
-        const X = () => (
-            <svg className="x-icon" viewBox="0 0 24 24">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-        );
-
-        const Settings = () => (
-            <svg className="settings-icon" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="3"></circle>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-            </svg>
-        );
-
-        const ArrowLeft = () => (
-            <svg className="arrow-icon" viewBox="0 0 24 24">
-                <path d="M19 12H5"></path>
-                <path d="M12 19l-7-7 7-7"></path>
-            </svg>
-        );
-
-        const Bell = () => (
-            <svg className="bell-icon" viewBox="0 0 24 24">
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-            </svg>
-        );
+        const Droplets = () => React.createElement('svg', {className: 'droplet-icon', viewBox: '0 0 24 24'}, React.createElement('path', {d: 'M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z'}));
+        const Plus = () => React.createElement('svg', {className: 'plus-icon', viewBox: '0 0 24 24'}, React.createElement('line', {x1: '12', y1: '5', x2: '12', y2: '19'}), React.createElement('line', {x1: '5', y1: '12', x2: '19', y2: '12'}));
+        const Menu = () => React.createElement('svg', {className: 'menu-icon', viewBox: '0 0 24 24'}, React.createElement('line', {x1: '3', y1: '6', x2: '21', y2: '6'}), React.createElement('line', {x1: '3', y1: '12', x2: '21', y2: '12'}), React.createElement('line', {x1: '3', y1: '18', x2: '21', y2: '18'}));
 
         function WaterTracker() {
-            const [currentPage, setCurrentPage] = useState('home');
-            const [menuOpen, setMenuOpen] = useState(false);
             const [waterConsumed, setWaterConsumed] = useState(() => {
-                try {
-                    const saved = localStorage.getItem('waterConsumed');
-                    return saved ? parseInt(saved) : 0;
-                } catch {
-                    return 0;
-                }
+                try { const saved = localStorage.getItem('waterConsumed'); return saved ? parseInt(saved) : 0; } catch { return 0; }
             });
-            const [dailyGoal] = useState(() => {
-                try {
-                    const saved = localStorage.getItem('dailyGoal');
-                    return saved ? parseInt(saved) : 64;
-                } catch {
-                    return 64;
-                }
-            });
+            const [dailyGoal] = useState(64);
             const [customAmount, setCustomAmount] = useState('');
             const [showCustomInput, setShowCustomInput] = useState(false);
-            const [notificationHours, setNotificationHours] = useState(() => {
-                try {
-                    const saved = localStorage.getItem('notificationHours');
-                    return saved ? JSON.parse(saved) : [];
-                } catch {
-                    return [];
-                }
-            });
-            const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+            const [menuOpen, setMenuOpen] = useState(false);
 
-            // Check if it's a new day and reset if needed
             useEffect(() => {
                 try {
                     const lastDate = localStorage.getItem('lastDate');
                     const today = new Date().toDateString();
-                    
                     if (lastDate !== today) {
                         setWaterConsumed(0);
                         localStorage.setItem('lastDate', today);
                         localStorage.setItem('waterConsumed', '0');
                     }
-                } catch {
-                    // localStorage not available, continue without persistence
-                }
+                } catch {}
             }, []);
 
-            // Save to localStorage whenever waterConsumed changes
             useEffect(() => {
-                try {
-                    localStorage.setItem('waterConsumed', waterConsumed.toString());
-                } catch {
-                    // localStorage not available, continue without persistence
-                }
+                try { localStorage.setItem('waterConsumed', waterConsumed.toString()); } catch {}
             }, [waterConsumed]);
-
-            // Save notification hours to localStorage
-            useEffect(() => {
-                try {
-                    localStorage.setItem('notificationHours', JSON.stringify(notificationHours));
-                } catch {
-                    // localStorage not available, continue without persistence
-                }
-            }, [notificationHours]);
-
-            // Request notification permission
-            useEffect(() => {
-                if ('Notification' in window) {
-                    if (Notification.permission === 'granted') {
-                        setNotificationsEnabled(true);
-                    } else if (Notification.permission === 'default') {
-                        // Don't auto-request, let user enable in settings
-                    }
-                }
-            }, []);
-
-            const requestNotificationPermission = async () => {
-                if ('Notification' in window) {
-                    const permission = await Notification.requestPermission();
-                    setNotificationsEnabled(permission === 'granted');
-                }
-            };
-
-            const scheduleNotifications = () => {
-                // Clear existing notifications (simplified approach)
-                // In a real app, you'd want to use service workers for persistent notifications
-                
-                notificationHours.forEach(hour => {
-                    const now = new Date();
-                    const notificationTime = new Date();
-                    notificationTime.setHours(hour, 0, 0, 0);
-                    
-                    // If the time has passed today, schedule for tomorrow
-                    if (notificationTime <= now) {
-                        notificationTime.setDate(notificationTime.getDate() + 1);
-                    }
-                    
-                    const timeUntilNotification = notificationTime.getTime() - now.getTime();
-                    
-                    setTimeout(() => {
-                        if (notificationsEnabled && Notification.permission === 'granted') {
-                            new Notification('💧 Hydration Reminder', {
-                                body: 'Time to drink some water! Stay hydrated!',
-                                icon: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9IiMzOTkzRkYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTIgMjJhNyA3IDAgMCAwIDctN2MwLTItMS0zLjktMy01LjVzLTMuNS00LTQtNi41Yy0uNSAyLjUtMiA0LjktNCA2LjVDNiAxMS4xIDUgMTMgNSAxNWE3IDcgMCAwIDAgNyA3eiIvPjwvc3ZnPg==',
-                        });
-                    }, timeUntilNotification);
-                });
-            };
-
-            useEffect(() => {
-                if (notificationsEnabled && notificationHours.length > 0) {
-                    scheduleNotifications();
-                }
-            }, [notificationHours, notificationsEnabled]);
 
             const percentage = Math.min((waterConsumed / dailyGoal) * 100, 100);
             const circumference = 2 * Math.PI * 90;
-            const strokeDasharray = circumference;
             const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
             const addWater = (amount) => {
@@ -417,368 +183,152 @@
 
             const handleCustomAdd = () => {
                 const amount = parseInt(customAmount);
-                if (amount && amount > 0) {
-                    addWater(amount);
-                }
+                if (amount && amount > 0) addWater(amount);
             };
 
-            const toggleHour = (hour) => {
-                setNotificationHours(prev => {
-                    if (prev.includes(hour)) {
-                        return prev.filter(h => h !== hour);
-                    } else {
-                        return [...prev, hour].sort((a, b) => a - b);
-                    }
-                });
-            };
+            const currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: false });
 
-            const formatHour = (hour) => {
-                if (hour === 0) return '12 AM';
-                if (hour === 12) return '12 PM';
-                if (hour < 12) return `${hour} AM`;
-                return `${hour - 12} PM`;
-            };
+            return React.createElement('div', {className: 'min-h-screen bg-black text-white relative overflow-hidden'},
+                React.createElement('div', {className: 'absolute inset-0 bg-gradient-to-b'}),
+                
+                React.createElement('div', {className: 'relative z-10 pt-12 pb-4 px-6'},
+                    React.createElement('div', {className: 'flex justify-between items-center text-sm font-medium'},
+                        React.createElement('span', null, currentTime),
+                        React.createElement('div', {className: 'flex items-center gap-1'},
+                            React.createElement('div', {className: 'w-4 h-2 border border-white rounded-sm'},
+                                React.createElement('div', {className: 'w-3 h-1 bg-white rounded-sm m-0.5'})
+                            )
+                        )
+                    )
+                ),
 
-            const quickAddButtons = [
-                { label: '6 oz', amount: 6, icon: '💧' },
-                { label: '12 oz', amount: 12, icon: '💧💧' },
-                { label: '24 oz', amount: 24, icon: '💧💧💧💧' }
-            ];
+                React.createElement('div', {className: 'relative z-10 px-6 mb-8'},
+                    React.createElement('div', {className: 'flex items-center justify-between mb-2'},
+                        React.createElement('div', {className: 'flex items-center gap-3'},
+                            React.createElement(Droplets),
+                            React.createElement('h1', {className: 'text-3xl font-bold'}, 'Hydration Meter')
+                        ),
+                        React.createElement('button', {
+                            onClick: () => setMenuOpen(true),
+                            className: 'p-2 hover:bg-gray-800/60 rounded-lg transition-all duration-200'
+                        }, React.createElement(Menu))
+                    ),
+                    React.createElement('p', {className: 'text-gray-400'}, 'Stay hydrated throughout your day')
+                ),
 
-            // Get current time for status bar
-            const currentTime = new Date().toLocaleTimeString('en-US', { 
-                hour: 'numeric', 
-                minute: '2-digit',
-                hour12: false 
-            });
+                React.createElement('div', {className: 'relative z-10 flex flex-col items-center mb-12'},
+                    React.createElement('div', {className: 'relative w-64 h-64'},
+                        React.createElement('svg', {className: 'w-64 h-64', viewBox: '0 0 200 200', style: {transform: 'rotate(-90deg)'}},
+                            React.createElement('circle', {cx: '100', cy: '100', r: '90', fill: 'none', stroke: 'rgba(55, 65, 81, 0.3)', strokeWidth: '12'}),
+                            React.createElement('circle', {
+                                cx: '100', cy: '100', r: '90', fill: 'none', stroke: 'url(#waterGradient)',
+                                strokeWidth: '12', strokeLinecap: 'round', strokeDasharray: circumference,
+                                strokeDashoffset: strokeDashoffset,
+                                style: {transition: 'stroke-dashoffset 0.7s ease-out'}
+                            }),
+                            React.createElement('defs', null,
+                                React.createElement('linearGradient', {id: 'waterGradient', x1: '0%', y1: '0%', x2: '100%', y2: '100%'},
+                                    React.createElement('stop', {offset: '0%', stopColor: '#3B82F6'}),
+                                    React.createElement('stop', {offset: '100%', stopColor: '#06B6D4'})
+                                )
+                            )
+                        ),
+                        React.createElement('div', {className: 'absolute inset-0 flex flex-col items-center justify-center'},
+                            React.createElement('div', {className: 'text-5xl font-bold text-blue-400 mb-2'}, waterConsumed),
+                            React.createElement('div', {className: 'text-gray-400 text-lg'}, `of ${dailyGoal} oz`),
+                            React.createElement('div', {className: 'text-2xl font-semibold mt-2 text-blue-300'}, `${Math.round(percentage)}%`)
+                        )
+                    )
+                ),
 
-            const renderHome = () => (
-                <div className="min-h-screen bg-black text-white relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-b"></div>
-                    
-                    {/* Status bar */}
-                    <div className="relative z-10 pt-12 pb-4 px-6">
-                        <div className="flex justify-between items-center text-sm font-medium">
-                            <span>{currentTime}</span>
-                            <div className="flex items-center gap-1">
-                                <div className="w-4 h-2 border border-white rounded-sm">
-                                    <div className="w-3 h-1 bg-white rounded-sm m-0.5"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                React.createElement('div', {className: 'relative z-10 px-6 mb-6'},
+                    React.createElement('h3', {className: 'text-xl font-semibold mb-4 text-gray-200'}, 'Quick Add'),
+                    React.createElement('div', {className: 'grid grid-cols-3 gap-3 mb-4'},
+                        React.createElement('button', {
+                            onClick: () => addWater(6),
+                            className: 'bg-gray-800/60 border border-gray-700 rounded-2xl p-4 text-center transition-all duration-200 active:scale-95 hover:bg-gray-700/60 cursor-pointer'
+                        },
+                            React.createElement('div', {className: 'text-2xl mb-2'}, '💧'),
+                            React.createElement('div', {className: 'text-white font-medium'}, '6 oz')
+                        ),
+                        React.createElement('button', {
+                            onClick: () => addWater(12),
+                            className: 'bg-gray-800/60 border border-gray-700 rounded-2xl p-4 text-center transition-all duration-200 active:scale-95 hover:bg-gray-700/60 cursor-pointer'
+                        },
+                            React.createElement('div', {className: 'text-2xl mb-2'}, '💧💧'),
+                            React.createElement('div', {className: 'text-white font-medium'}, '12 oz')
+                        ),
+                        React.createElement('button', {
+                            onClick: () => addWater(24),
+                            className: 'bg-gray-800/60 border border-gray-700 rounded-2xl p-4 text-center transition-all duration-200 active:scale-95 hover:bg-gray-700/60 cursor-pointer'
+                        },
+                            React.createElement('div', {className: 'text-2xl mb-2'}, '💧💧💧💧'),
+                            React.createElement('div', {className: 'text-white font-medium'}, '24 oz')
+                        )
+                    ),
+                    React.createElement('button', {
+                        onClick: () => setShowCustomInput(!showCustomInput),
+                        className: 'w-full bg-blue-600/80 rounded-2xl p-4 flex items-center justify-center gap-2 transition-all duration-200 active:scale-95 hover:bg-blue-500/80 cursor-pointer'
+                    },
+                        React.createElement(Plus),
+                        React.createElement('span', {className: 'font-medium'}, 'Custom Amount')
+                    ),
+                    showCustomInput && React.createElement('div', {className: 'mt-4 p-4 bg-gray-800/60 rounded-2xl border border-gray-700'},
+                        React.createElement('div', {className: 'flex gap-3'},
+                            React.createElement('input', {
+                                type: 'number', value: customAmount,
+                                onChange: (e) => setCustomAmount(e.target.value),
+                                placeholder: 'Enter oz',
+                                className: 'flex-1 bg-gray-700/60 border border-gray-600 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500'
+                            }),
+                            React.createElement('button', {
+                                onClick: handleCustomAdd,
+                                disabled: !customAmount || parseInt(customAmount) <= 0,
+                                className: 'bg-blue-600 disabled:bg-gray-600 disabled:opacity-50 rounded-xl px-6 py-3 font-medium transition-all duration-200 cursor-pointer'
+                            }, 'Add')
+                        )
+                    )
+                ),
 
-                    {/* Header with hamburger menu */}
-                    <div className="relative z-10 px-6 mb-8">
-                        <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center gap-3">
-                                <Droplets />
-                                <h1 className="text-3xl font-bold">Hydration Meter</h1>
-                            </div>
-                            <button 
-                                onClick={() => setMenuOpen(true)}
-                                className="p-2 hover:bg-gray-800/60 rounded-lg transition-all duration-200"
-                            >
-                                <Menu />
-                            </button>
-                        </div>
-                        <p className="text-gray-400">Stay hydrated throughout your day</p>
-                    </div>
+                percentage >= 100 && React.createElement('div', {className: 'relative z-10 mx-6 mb-6 p-4 bg-green-600/20 border border-green-500/30 rounded-2xl'},
+                    React.createElement('div', {className: 'flex items-center gap-2'},
+                        React.createElement('span', {className: 'text-2xl'}, '🎉'),
+                        React.createElement('div', null,
+                            React.createElement('div', {className: 'text-green-400 font-semibold'}, 'Goal Achieved!'),
+                            React.createElement('div', {className: 'text-green-300 text-sm'}, 'Great job staying hydrated today')
+                        )
+                    )
+                ),
 
-                    {/* Progress Ring */}
-                    <div className="relative z-10 flex flex-col items-center mb-12">
-                        <div className="relative w-64 h-64">
-                            <svg className="w-64 h-64 transform" viewBox="0 0 200 200" style={{transform: 'rotate(-90deg)'}}>
-                                <circle
-                                    cx="100"
-                                    cy="100"
-                                    r="90"
-                                    fill="none"
-                                    stroke="rgba(55, 65, 81, 0.3)"
-                                    strokeWidth="12"
-                                />
-                                <circle
-                                    cx="100"
-                                    cy="100"
-                                    r="90"
-                                    fill="none"
-                                    stroke="url(#waterGradient)"
-                                    strokeWidth="12"
-                                    strokeLinecap="round"
-                                    strokeDasharray={strokeDasharray}
-                                    strokeDashoffset={strokeDashoffset}
-                                    style={{
-                                        transition: 'stroke-dashoffset 0.7s ease-out'
-                                    }}
-                                />
-                                <defs>
-                                    <linearGradient id="waterGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" stopColor="#3B82F6" />
-                                        <stop offset="100%" stopColor="#06B6D4" />
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-                            
-                            <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <div className="text-5xl font-bold text-blue-400 mb-2">
-                                    {waterConsumed}
-                                </div>
-                                <div className="text-gray-400 text-lg">of {dailyGoal} oz</div>
-                                <div className="text-2xl font-semibold mt-2 text-blue-300">
-                                    {Math.round(percentage)}%
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                React.createElement('div', {className: 'h-8'}),
 
-                    {/* Quick Add Buttons */}
-                    <div className="relative z-10 px-6 mb-6">
-                        <h3 className="text-xl font-semibold mb-4 text-gray-200">Quick Add</h3>
-                        <div className="grid grid-cols-3 gap-3 mb-4">
-                            {quickAddButtons.map((button) => (
-                                <button
-                                    key={button.amount}
-                                    onClick={() => addWater(button.amount)}
-                                    className="bg-gray-800/60 border border-gray-700 rounded-2xl p-4 text-center transition-all duration-200 active:scale-95 hover:bg-gray-700/60 cursor-pointer"
-                                >
-                                    <div className="text-2xl mb-2">{button.icon}</div>
-                                    <div className="text-white font-medium">{button.label}</div>
-                                </button>
-                            ))}
-                        </div>
-                        
-                        <button
-                            onClick={() => setShowCustomInput(!showCustomInput)}
-                            className="w-full bg-blue-600/80 rounded-2xl p-4 flex items-center justify-center gap-2 transition-all duration-200 active:scale-95 hover:bg-blue-500/80 cursor-pointer"
-                        >
-                            <Plus />
-                            <span className="font-medium">Custom Amount</span>
-                        </button>
-                        
-                        {showCustomInput && (
-                            <div className="mt-4 p-4 bg-gray-800/60 rounded-2xl border border-gray-700">
-                                <div className="flex gap-3">
-                                    <input
-                                        type="number"
-                                        value={customAmount}
-                                        onChange={(e) => setCustomAmount(e.target.value)}
-                                        placeholder="Enter oz"
-                                        className="flex-1 bg-gray-700/60 border border-gray-600 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
-                                        autoFocus
-                                    />
-                                    <button
-                                        onClick={handleCustomAdd}
-                                        disabled={!customAmount || parseInt(customAmount) <= 0}
-                                        className="bg-blue-600 disabled:bg-gray-600 disabled:opacity-50 rounded-xl px-6 py-3 font-medium transition-all duration-200 cursor-pointer"
-                                    >
-                                        Add
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Achievement message */}
-                    {percentage >= 100 && (
-                        <div className="relative z-10 mx-6 mb-6 p-4 bg-green-600/20 border border-green-500/30 rounded-2xl">
-                            <div className="flex items-center gap-2">
-                                <span className="text-2xl">🎉</span>
-                                <div>
-                                    <div className="text-green-400 font-semibold">Goal Achieved!</div>
-                                    <div className="text-green-300 text-sm">Great job staying hydrated today</div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    <div className="h-8"></div>
-                </div>
-            );
-
-            const renderSettings = () => (
-                <div className="min-h-screen bg-black text-white relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-b"></div>
-                    
-                    {/* Status bar */}
-                    <div className="relative z-10 pt-12 pb-4 px-6">
-                        <div className="flex justify-between items-center text-sm font-medium">
-                            <span>{currentTime}</span>
-                            <div className="flex items-center gap-1">
-                                <div className="w-4 h-2 border border-white rounded-sm">
-                                    <div className="w-3 h-1 bg-white rounded-sm m-0.5"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Header */}
-                    <div className="relative z-10 px-6 mb-8">
-                        <div className="flex items-center gap-3 mb-2">
-                            <button 
-                                onClick={() => setCurrentPage('home')}
-                                className="p-2 hover:bg-gray-800/60 rounded-lg transition-all duration-200"
-                            >
-                                <ArrowLeft />
-                            </button>
-                            <Settings />
-                            <h1 className="text-3xl font-bold">Settings</h1>
-                        </div>
-                        <p className="text-gray-400 ml-12">Customize your hydration reminders</p>
-                    </div>
-
-                    <div className="relative z-10 px-6">
-                        {/* Notification Permission */}
-                        <div className="mb-8 p-4 bg-gray-800/60 rounded-2xl border border-gray-700">
-                            <div className="flex items-center justify-between mb-4">
-                                <div className="flex items-center gap-3">
-                                    <Bell />
-                                    <div>
-                                        <h3 className="text-lg font-semibold">Notifications</h3>
-                                        <p className="text-gray-400 text-sm">Get reminders to stay hydrated</p>
-                                    </div>
-                                </div>
-                                <div className={`w-12 h-6 rounded-full p-1 transition-all duration-300 cursor-pointer ${notificationsEnabled ? 'bg-blue-600' : 'bg-gray-600'}`} onClick={requestNotificationPermission}>
-                                    <div className={`w-4 h-4 bg-white rounded-full transition-transform duration-300 ${notificationsEnabled ? 'translate-x-6' : 'translate-x-0'}`}></div>
-                                </div>
-                            </div>
-                            
-                            {!notificationsEnabled && (
-                                <div className="text-sm text-gray-400 bg-gray-700/40 p-3 rounded-xl">
-                                    💡 Tap the toggle above to enable notifications
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Reminder Schedule */}
-                        <div className="mb-8">
-                            <h3 className="text-xl font-semibold mb-4 text-gray-200">Reminder Schedule</h3>
-                            <p className="text-gray-400 text-sm mb-6">Select hours when you'd like to receive hydration reminders</p>
-                            
-                            {/* Hour Selection Grid */}
-                            <div className="grid grid-cols-4 gap-3">
-                                {Array.from({ length: 24 }, (_, i) => (
-                                    <button
-                                        key={i}
-                                        onClick={() => toggleHour(i)}
-                                        className={`p-3 rounded-xl text-sm font-medium transition-all duration-200 border ${
-                                            notificationHours.includes(i)
-                                                ? 'hour-selected'
-                                                : 'bg-gray-800/60 border-gray-700 text-gray-300 hover:bg-gray-700/60'
-                                        }`}
-                                    >
-                                        {formatHour(i)}
-                                    </button>
-                                ))}
-                            </div>
-
-                            {/* Selected hours summary */}
-                            {notificationHours.length > 0 && (
-                                <div className="mt-6 p-4 bg-blue-600/20 border border-blue-500/30 rounded-xl">
-                                    <div className="flex items-start gap-2">
-                                        <Bell />
-                                        <div>
-                                            <h4 className="text-blue-400 font-semibold mb-2">Active Reminders</h4>
-                                            <div className="text-blue-300 text-sm">
-                                                {notificationHours.length === 1 ? '1 reminder set' : `${notificationHours.length} reminders set`} for:{' '}
-                                                {notificationHours.map(hour => formatHour(hour)).join(', ')}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Tips */}
-                        <div className="mb-8 p-4 bg-gray-800/40 rounded-2xl border border-gray-700">
-                            <h4 className="text-lg font-semibold mb-3 text-gray-200">💡 Tips</h4>
-                            <ul className="text-sm text-gray-400 space-y-2">
-                                <li>• Most effective: Set reminders every 2-3 hours</li>
-                                <li>• Start early: 7-8 AM reminder helps kickstart your day</li>
-                                <li>• Avoid late evening reminders to prevent sleep disruption</li>
-                                <li>• Popular schedule: 8 AM, 11 AM, 2 PM, 5 PM, 8 PM</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div className="h-8"></div>
-                </div>
-            );
-
-            // Slide menu component
-            const renderSlideMenu = () => (
-                <>
-                    {/* Backdrop */}
-                    {menuOpen && (
-                        <div 
-                            className="fixed inset-0 bg-black bg-opacity-50 z-40"
-                            onClick={() => setMenuOpen(false)}
-                        ></div>
-                    )}
-                    
-                    {/* Slide menu */}
-                    <div className={`fixed top-0 left-0 h-full w-80 max-w-sm bg-gray-900/95 z-50 slide-menu ${menuOpen ? 'open' : ''}`}>
-                        <div className="p-6">
-                            {/* Menu Header */}
-                            <div className="flex items-center justify-between mb-8 pt-8">
-                                <div className="flex items-center gap-3">
-                                    <Droplets />
-                                    <h2 className="text-xl font-bold text-white">Hydration Meter</h2>
-                                </div>
-                                <button 
-                                    onClick={() => setMenuOpen(false)}
-                                    className="p-2 hover:bg-gray-800/60 rounded-lg transition-all duration-200 text-white"
-                                >
-                                    <X />
-                                </button>
-                            </div>
-
-                            {/* Menu Items */}
-                            <nav className="space-y-2">
-                                <button
-                                    onClick={() => {
-                                        setCurrentPage('home');
-                                        setMenuOpen(false);
-                                    }}
-                                    className="w-full flex items-center gap-3 p-4 text-left hover:bg-gray-800/60 rounded-xl transition-all duration-200 text-white"
-                                >
-                                    <Droplets />
-                                    <span className="text-lg">Home</span>
-                                </button>
-                                
-                                <button
-                                    onClick={() => {
-                                        setCurrentPage('settings');
-                                        setMenuOpen(false);
-                                    }}
-                                    className="w-full flex items-center gap-3 p-4 text-left hover:bg-gray-800/60 rounded-xl transition-all duration-200 text-white"
-                                >
-                                    <Settings />
-                                    <span className="text-lg">Settings</span>
-                                </button>
-                            </nav>
-
-                            {/* Menu Footer */}
-                            <div className="absolute bottom-6 left-6 right-6">
-                                <div className="text-center text-gray-400 text-sm">
-                                    <p>Stay hydrated! 💧</p>
-                                    <p className="text-xs mt-2">Daily Goal: {dailyGoal} oz</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </>
-            );
-
-            return (
-                <div className="relative">
-                    {/* Main Content */}
-                    {currentPage === 'home' && renderHome()}
-                    {currentPage === 'settings' && renderSettings()}
-                    
-                    {/* Slide Menu */}
-                    {renderSlideMenu()}
-                </div>
+                menuOpen && React.createElement('div', {
+                    className: 'fixed inset-0 bg-black bg-opacity-50 z-40',
+                    onClick: () => setMenuOpen(false)
+                }),
+                
+                React.createElement('div', {className: `fixed top-0 left-0 h-full w-80 max-w-sm bg-gray-900/95 z-50 slide-menu ${menuOpen ? 'open' : ''}`},
+                    React.createElement('div', {className: 'p-6'},
+                        React.createElement('div', {className: 'flex items-center justify-between mb-8 pt-8'},
+                            React.createElement('div', {className: 'flex items-center gap-3'},
+                                React.createElement(Droplets),
+                                React.createElement('h2', {className: 'text-xl font-bold text-white'}, 'Hydration Meter')
+                            ),
+                            React.createElement('button', {
+                                onClick: () => setMenuOpen(false),
+                                className: 'p-2 hover:bg-gray-800/60 rounded-lg transition-all duration-200 text-white'
+                            }, 'X')
+                        ),
+                        React.createElement('div', {className: 'text-center text-gray-400 text-sm mt-8'},
+                            React.createElement('p', null, 'Settings coming soon! 💧'),
+                            React.createElement('p', {className: 'text-xs mt-2'}, `Daily Goal: ${dailyGoal} oz`)
+                        )
+                    )
+                )
             );
         }
 
         ReactDOM.render(React.createElement(WaterTracker), document.getElementById('root'));
+    </script>
+</body>
+</html>
