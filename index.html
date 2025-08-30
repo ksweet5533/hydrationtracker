@@ -9,7 +9,7 @@
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
       Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    background-color: #001f3f; /* Very dark blue */
+    background-color: #111184; /* Darker deep blue */
     color: #e6f0ff; /* Very light blue - near white */
     display: flex;
     height: 100vh;
@@ -22,8 +22,8 @@
     max-width: 320px;
     padding: 24px;
     border-radius: 24px;
-    background: #002f5f; /* slightly lighter dark blue for container */
-    box-shadow: 0 8px 32px rgba(0, 122, 255, 0.6);
+    background: #1c2376; /* Slightly lighter dark blue */
+    box-shadow: 0 8px 32px rgba(153, 194, 255, 0.6);
   }
 
   h1 {
@@ -32,13 +32,13 @@
     font-size: 1.8rem;
   }
 
-  svg {
-    margin-bottom: 5px;
-    filter: drop-shadow(0 4px 6px rgba(0, 122, 255, 0.7));
+  svg.progress-ring-svg {
+    margin-bottom: 40px;
+    filter: drop-shadow(0 4px 6px rgba(153, 194, 255, 0.7));
   }
 
   circle.background-ring {
-    stroke: #334a66;
+    stroke: transparent; /* Transparent when empty */
   }
 
   circle.progress-ring {
@@ -49,20 +49,20 @@
 
   text.progress-text {
     fill: #cce0ff;
-    font-size: 1.4rem;
-    font-weight: 600;
+    font-size: 1.6rem;
+    font-weight: 700;
   }
 
-  .progress-subtext {
-    font-size: 0.95rem;
-    color: #99bbff;
-    margin-bottom: 25px;
+  text.progress-subtext {
+    fill: #99bbff;
+    font-size: 1rem;
+    font-weight: 600;
   }
 
   .buttons {
     display: flex;
     justify-content: center;
-    gap: 24px;
+    gap: 20px;
     margin-bottom: 20px;
   }
 
@@ -72,18 +72,23 @@
     align-items: center;
     cursor: pointer;
     user-select: none;
+    position: relative;
   }
 
   button.option-btn {
     background-color: rgba(153, 194, 255, 0.15);
     border: 1.5px solid #99c2ff;
     border-radius: 22px;
-    padding: 10px 20px;
+    padding: 12px 28px 12px 40px; /* left padding for drop icons */
     font-size: 1rem;
     color: #cce0ff;
     box-shadow: 0 4px 12px rgba(153, 194, 255, 0.35);
     backdrop-filter: blur(12px);
     transition: background-color 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   button.option-btn:hover,
@@ -94,15 +99,15 @@
   }
 
   .waterdrops {
-    margin-top: 6px;
+    position: absolute;
+    left: 12px;
     display: flex;
-    gap: 6px;
-    justify-content: center;
+    gap: 4px;
   }
 
   .waterdrop-icon {
-    width: 16px;
-    height: 24px;
+    width: 14px;
+    height: 21px;
     fill: #cce0ff;
     filter: drop-shadow(0 0 1.5px #80aaff);
   }
@@ -120,7 +125,7 @@
     font-size: 1rem;
     border-radius: 18px;
     border: 1.5px solid #335577;
-    background-color: #002f5f;
+    background-color: #1c2376;
     color: #cce0ff;
     text-align: center;
     outline: none;
@@ -162,7 +167,14 @@
     <h1>Water Tracker</h1>
 
     <!-- Progress Ring -->
-    <svg width="200" height="200" viewBox="0 0 100 100" aria-label="Daily water intake progress" role="img">
+    <svg
+      class="progress-ring-svg"
+      width="200"
+      height="200"
+      viewBox="0 0 100 100"
+      aria-label="Daily water intake progress"
+      role="img"
+    >
       <circle
         class="background-ring"
         cx="50"
@@ -184,28 +196,190 @@
       <text
         class="progress-text"
         x="50"
-        y="50"
+        y="44"
         text-anchor="middle"
         dominant-baseline="central"
-      >0 oz</text>
+      >
+        0 oz
+      </text>
+      <text
+        class="progress-subtext"
+        x="50"
+        y="58"
+        text-anchor="middle"
+        dominant-baseline="central"
+      >
+        out of 100 oz
+      </text>
     </svg>
-
-    <div class="progress-subtext">out of 100 oz</div>
 
     <div class="buttons" role="group" aria-label="Add water amount">
       <div class="btn-container">
-        <button class="option-btn" data-oz="6">+6 oz</button>
-        <div class="waterdrops" aria-hidden="true">
-          <svg class="waterdrop-icon" viewBox="0 0 24 36" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C7 9 0 17 0 24a12 12 0 0024 0c0-7-7-15-12-24z"/></svg>
-        </div>
+        <button class="option-btn" data-oz="6" type="button">
+          <div class="waterdrops">
+            <svg
+              class="waterdrop-icon"
+              viewBox="0 0 24 36"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M12 0C7 9 0 17 0 24a12 12 0 0024 0c0-7-7-15-12-24z"
+              />
+            </svg>
+          </div>
+          +6 oz
+        </button>
       </div>
       <div class="btn-container">
-        <button class="option-btn" data-oz="12">+12 oz</button>
-        <div class="waterdrops" aria-hidden="true">
-          <svg class="waterdrop-icon" viewBox="0 0 24 36" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C7 9 0 17 0 24a12 12 0 0024 0c0-7-7-15-12-24z"/></svg>
-          <svg class="waterdrop-icon" viewBox="0 0 24 36" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C7 9 0 17 0 24a12 12 0 0024 0c0-7-7-15-12-24z"/></svg>
-        </div>
+        <button class="option-btn" data-oz="12" type="button">
+          <div class="waterdrops">
+            <svg
+              class="waterdrop-icon"
+              viewBox="0 0 24 36"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M12 0C7 9 0 17 0 24a12 12 0 0024 0c0-7-7-15-12-24z"
+              />
+            </svg>
+            <svg
+              class="waterdrop-icon"
+              viewBox="0 0 24 36"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M12 0C7 9 0 17 0 24a12 12 0 0024 0c0-7-7-15-12-24z"
+              />
+            </svg>
+          </div>
+          +12 oz
+        </button>
       </div>
       <div class="btn-container">
-        <button class="option-btn" data-oz="24">+24 oz</button>
-        <div class="waterdrops" aria
+        <button class="option-btn" data-oz="24" type="button">
+          <div class="waterdrops">
+            <svg
+              class="waterdrop-icon"
+              viewBox="0 0 24 36"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M12 0C7 9 0 17 0 24a12 12 0 0024 0c0-7-7-15-12-24z"
+              />
+            </svg>
+            <svg
+              class="waterdrop-icon"
+              viewBox="0 0 24 36"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M12 0C7 9 0 17 0 24a12 12 0 0024 0c0-7-7-15-12-24z"
+              />
+            </svg>
+            <svg
+              class="waterdrop-icon"
+              viewBox="0 0 24 36"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M12 0C7 9 0 17 0 24a12 12 0 0024 0c0-7-7-15-12-24z"
+              />
+            </svg>
+            <svg
+              class="waterdrop-icon"
+              viewBox="0 0 24 36"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M12 0C7 9 0 17 0 24a12 12 0 0024 0c0-7-7-15-12-24z"
+              />
+            </svg>
+          </div>
+          +24 oz
+        </button>
+      </div>
+    </div>
+
+    <div class="custom-container">
+      <input
+        class="custom-input"
+        type="number"
+        min="1"
+        step="1"
+        placeholder="Custom oz"
+        aria-label="Enter custom water amount in ounces"
+      />
+      <button class="custom-add" aria-label="Add custom water amount" type="button">
+        Add
+      </button>
+    </div>
+  </div>
+
+<script>
+  (function () {
+    const dailyGoalOunces = 100;
+    const mlPerOz = 29.5735;
+    const dailyGoal = dailyGoalOunces * mlPerOz;
+    let intake = 0;
+
+    const progressRing = document.querySelector("circle.progress-ring");
+    const progressText = document.querySelector("text.progress-text");
+    const circumference = 2 * Math.PI * 45;
+
+    progressRing.style.strokeDasharray = circumference;
+    progressRing.style.strokeDashoffset = circumference;
+
+    const buttons = document.querySelectorAll("button.option-btn");
+    const customInput = document.querySelector("input.custom-input");
+    const customAddBtn = document.querySelector("button.custom-add");
+
+    function updateProgress() {
+      const progress = intake / dailyGoal;
+      const offset = circumference * (1 - progress);
+      progressRing.style.strokeDashoffset = offset;
+      const intakeOz = Math.round(intake / mlPerOz);
+      progressText.textContent = intakeOz + " oz";
+    }
+
+    function addWaterOz(oz) {
+      if (oz <= 0 || isNaN(oz)) return;
+      intake = Math.min(intake + oz * mlPerOz, dailyGoal);
+      updateProgress();
+    }
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const oz = parseInt(btn.getAttribute("data-oz"), 10);
+        addWaterOz(oz);
+      });
+    });
+
+    customAddBtn.addEventListener("click", () => {
+      const val = parseInt(customInput.value, 10);
+      if (!isNaN(val) && val > 0) {
+        addWaterOz(val);
+        customInput.value = "";
+      } else {
+        alert("Please enter a positive whole number.");
+      }
+    });
+
+    updateProgress();
+  })();
+</script>
+</body>
+</html>
