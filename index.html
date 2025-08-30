@@ -3,16 +3,14 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Water Tracker PWA</title>
+<title>Water Tracker PWA Dark Mode</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Text&display=swap');
-
   body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
       Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    background-color: #f9f9f9;
-    color: #111;
+    background-color: #001f3f; /* Very dark blue */
+    color: #e6f0ff; /* Very light blue - near white */
     display: flex;
     height: 100vh;
     align-items: center;
@@ -22,69 +20,148 @@
   .container {
     text-align: center;
     max-width: 320px;
-    padding: 20px;
+    padding: 24px;
     border-radius: 24px;
-    background: #fff;
-    box-shadow: 0 8px 32px rgba(0, 122, 255, 0.15);
+    background: #002f5f; /* slightly lighter dark blue for container */
+    box-shadow: 0 8px 32px rgba(0, 122, 255, 0.6);
   }
 
   h1 {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     font-weight: 600;
     font-size: 1.8rem;
   }
 
   svg {
-    margin-bottom: 40px;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    margin-bottom: 5px;
+    filter: drop-shadow(0 4px 6px rgba(0, 122, 255, 0.7));
   }
 
   circle.background-ring {
-    stroke: #ccc;
+    stroke: #334a66;
   }
+
   circle.progress-ring {
-    stroke: #007aff;
+    stroke: #99c2ff;
     transition: stroke-dashoffset 0.3s ease;
     stroke-linecap: round;
   }
 
   text.progress-text {
-    fill: #007aff;
-    font-size: 1.2rem;
+    fill: #cce0ff;
+    font-size: 1.4rem;
     font-weight: 600;
+  }
+
+  .progress-subtext {
+    font-size: 0.95rem;
+    color: #99bbff;
+    margin-bottom: 25px;
   }
 
   .buttons {
     display: flex;
     justify-content: center;
-    gap: 16px;
+    gap: 24px;
+    margin-bottom: 20px;
   }
 
-  button {
-    background-color: rgba(0, 122, 255, 0.2);
-    border: none;
-    border-radius: 20px;
-    padding: 12px 20px;
-    font-size: 1rem;
-    color: #007aff;
+  .btn-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
-    backdrop-filter: blur(10px);
-    transition: background-color 0.3s ease;
     user-select: none;
   }
 
-  button:hover,
-  button:focus {
-    background-color: rgba(0, 122, 255, 0.4);
+  button.option-btn {
+    background-color: rgba(153, 194, 255, 0.15);
+    border: 1.5px solid #99c2ff;
+    border-radius: 22px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #cce0ff;
+    box-shadow: 0 4px 12px rgba(153, 194, 255, 0.35);
+    backdrop-filter: blur(12px);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+
+  button.option-btn:hover,
+  button.option-btn:focus {
+    background-color: rgba(153, 194, 255, 0.35);
+    border-color: #e6f0ff;
+    outline: none;
+  }
+
+  .waterdrops {
+    margin-top: 6px;
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+  }
+
+  .waterdrop-icon {
+    width: 16px;
+    height: 24px;
+    fill: #cce0ff;
+    filter: drop-shadow(0 0 1.5px #80aaff);
+  }
+
+  .custom-container {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  input.custom-input {
+    width: 80px;
+    padding: 10px 12px;
+    font-size: 1rem;
+    border-radius: 18px;
+    border: 1.5px solid #335577;
+    background-color: #002f5f;
+    color: #cce0ff;
+    text-align: center;
+    outline: none;
+    font-weight: 600;
+    transition: border-color 0.3s ease;
+  }
+
+  input.custom-input::placeholder {
+    color: #5577aa;
+  }
+
+  input.custom-input:focus {
+    border-color: #99c2ff;
+  }
+
+  button.custom-add {
+    background-color: #5577aa;
+    border: none;
+    border-radius: 18px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #e6f0ff;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0 4px 12px rgba(85, 119, 170, 0.7);
+    transition: background-color 0.3s ease;
+  }
+
+  button.custom-add:hover,
+  button.custom-add:focus {
+    background-color: #aac3ff;
+    color: #001f3f;
     outline: none;
   }
 </style>
 </head>
 <body>
-  <div class="container" role="main" aria-label="Water Tracker">
+  <div class="container" role="main" aria-label="Water Tracker Dark Mode">
     <h1>Water Tracker</h1>
 
+    <!-- Progress Ring -->
     <svg width="200" height="200" viewBox="0 0 100 100" aria-label="Daily water intake progress" role="img">
       <circle
         class="background-ring"
@@ -110,49 +187,25 @@
         y="50"
         text-anchor="middle"
         dominant-baseline="central"
-      >0 ml</text>
+      >0 oz</text>
     </svg>
 
+    <div class="progress-subtext">out of 100 oz</div>
+
     <div class="buttons" role="group" aria-label="Add water amount">
-      <button data-amount="100">+100 ml</button>
-      <button data-amount="200">+200 ml</button>
-      <button data-amount="300">+300 ml</button>
-    </div>
-  </div>
-
-<script>
-  (function () {
-    const dailyGoal = 2000;
-    let intake = 0;
-
-    const progressRing = document.querySelector("circle.progress-ring");
-    const progressText = document.querySelector("text.progress-text");
-    const circumference = 2 * Math.PI * 45;
-
-    progressRing.style.strokeDasharray = circumference;
-    progressRing.style.strokeDashoffset = circumference;
-
-    function updateProgress() {
-      const progress = intake / dailyGoal;
-      const offset = circumference * (1 - progress);
-      progressRing.style.strokeDashoffset = offset;
-      progressText.textContent = intake + " ml";
-    }
-
-    function addWater(amount) {
-      intake = Math.min(intake + amount, dailyGoal);
-      updateProgress();
-    }
-
-    document.querySelectorAll(".buttons button").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const amount = parseInt(btn.getAttribute("data-amount"), 10);
-        addWater(amount);
-      });
-    });
-
-    updateProgress();
-  })();
-</script>
-</body>
-</html>
+      <div class="btn-container">
+        <button class="option-btn" data-oz="6">+6 oz</button>
+        <div class="waterdrops" aria-hidden="true">
+          <svg class="waterdrop-icon" viewBox="0 0 24 36" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C7 9 0 17 0 24a12 12 0 0024 0c0-7-7-15-12-24z"/></svg>
+        </div>
+      </div>
+      <div class="btn-container">
+        <button class="option-btn" data-oz="12">+12 oz</button>
+        <div class="waterdrops" aria-hidden="true">
+          <svg class="waterdrop-icon" viewBox="0 0 24 36" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C7 9 0 17 0 24a12 12 0 0024 0c0-7-7-15-12-24z"/></svg>
+          <svg class="waterdrop-icon" viewBox="0 0 24 36" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C7 9 0 17 0 24a12 12 0 0024 0c0-7-7-15-12-24z"/></svg>
+        </div>
+      </div>
+      <div class="btn-container">
+        <button class="option-btn" data-oz="24">+24 oz</button>
+        <div class="waterdrops" aria
