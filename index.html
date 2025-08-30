@@ -39,9 +39,9 @@
   }
 
   circle.background-ring {
-    stroke: #334a66;
+    stroke: white;
     stroke-width: 9;
-    fill: none;
+    fill: white; /* White filled inside ring */
   }
 
   circle.progress-ring {
@@ -53,15 +53,15 @@
   }
 
   text.progress-text {
-    fill: #cce0ff;
-    font-size: 1.8rem;
+    fill: #111184;
+    font-size: 1.2rem;
     font-weight: 700;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.7px;
   }
 
   text.progress-subtext {
-    fill: #99bbff;
-    font-size: 1.05rem;
+    fill: #555fad;
+    font-size: 0.9rem;
     font-weight: 600;
     letter-spacing: 0.6px;
   }
@@ -82,7 +82,7 @@
     background-color: rgba(153, 194, 255, 0.17);
     border: 1.8px solid #99c2ff;
     border-radius: 26px;
-    padding: 12px 34px 12px 40px;
+    padding: 12px 22px 12px 38px;
     font-size: 1.05rem;
     font-weight: 600;
     color: #cce0ff;
@@ -95,6 +95,7 @@
     user-select: none;
     transition: background-color 0.3s ease, border-color 0.3s ease;
     min-width: 96px;
+    position: relative;
   }
 
   button.option-btn:hover,
@@ -108,22 +109,20 @@
 
   .waterdrops {
     position: absolute;
-    left: 14px;
+    left: 12px;
     display: flex;
-    gap: 5px;
-    top: 50%;
-    transform: translateY(-50%);
+    gap: 4px;
   }
 
   .waterdrop-icon {
-    width: 14px;
-    height: 21px;
+    width: 12px;
+    height: 18px;
     fill: #cce0ff;
     filter: drop-shadow(0 0 2px #80aaff);
   }
 
   .custom-container {
-    margin-top: 8px;
+    margin-top: 12px;
     display: none;
     justify-content: center;
     gap: 14px;
@@ -208,7 +207,7 @@
       <text
         class="progress-text"
         x="50"
-        y="44"
+        y="40"
         text-anchor="middle"
         dominant-baseline="central"
       >
