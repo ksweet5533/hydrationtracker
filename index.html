@@ -734,12 +734,167 @@
   <div class="celebration">🎉</div>
 
 <script>
-  (function () {
-    const dailyGoalOunces = 100;
-    const mlPerOz = 29.5735;
-    const dailyGoal = dailyGoalOunces * mlPerOz;
-    let intake = 0;
+(function () {
+  const dailyGoalOunces = 100;
+  const mlPerOz = 29.5735;
+  const dailyGoal = dailyGoalOunces * mlPerOz;
+  let intake = 0;
 
-    const progressRing = document.querySelector("circle.progress-ring");
-    const progressText = document.querySelector("text.progress-text");
-    const celebration = document.
+  const progressRing = document.querySelector("circle.progress-ring");
+  const progressText = document.querySelector("text.progress-text");
+  const celebration = document.querySelector(".celebration");
+  const circumference = 2 * Math.PI * 45;
+
+  progressRing.style.strokeDasharray = circumference;
+  progressRing.style.strokeDashoffset = circumference;
+
+  const buttons = document.querySelectorAll("button.option-btn");
+  const customInput = document.querySelector("input.custom-input");
+  const customAddBtn = document.querySelector("button.custom-add");
+  const resetBtn = document.querySelector("button.reset-btn");
+  const settingsBtn = document.querySelector("button.settings-btn");
+  const settingsPanel = document.getElementById("settingsPanel");
+  const settingsOverlay = document.getElementById("settingsOverlay");
+  const closeSettingsBtn = document.querySelector(".close-settings");
+  const timeButtons = document.querySelectorAll(".time-btn");
+  const clearAllBtn = document.querySelector(".clear-all-btn");
+
+  let notificationHours = new Set();
+
+  function updateProgress() {
+    const progress = Math.min(intake / dailyGoal, 1);
+    const offset = circumference * (1 - progress);
+    progressRing.style.strokeDashoffset = offset;
+    
+    const intakeOz = Math.round(intake / mlPerOz);
+    progressText.textContent = intakeOz + " oz";
+    
+    if (progress >= 1 && intake > 0) {
+      showCelebration();
+    }
+  }
+
+  function showCelebration() {
+    celebration.classList.add('show');
+    setTimeout(() => {
+      celebration.classList.remove('show');
+    }, 1000);
+  }
+
+  function addWaterOz(oz) {
+    if (oz <= 0 || isNaN(oz)) return;
+    
+    const previousIntake = intake;
+    intake = Math.min(intake + oz * mlPerOz, dailyGoal);
+    
+    setTimeout(() => updateProgress(), 100);
+    
+    if (previousIntake < dailyGoal && intake >= dailyGoal) {
+      setTimeout(showCelebration, 300);
+    }
+  }
+
+  function openSettings() {
+    settingsPanel.classList.add('active');
+    settingsOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSettings() {
+    settingsPanel.classList.remove('active');
+    settingsOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const oz = parseInt(btn.getAttribute("data-oz"), 10);
+      addWaterOz(oz);
+      
+      btn.style.transform = 'translateY(0) scale(0.95)';
+      setTimeout(() => {
+        btn.style.transform = '';
+      }, 150);
+    });
+  });
+
+  customAddBtn.addEventListener("click", () => {
+    const val = parseInt(customInput.value, 10);
+    if (!isNaN(val) && val > 0) {
+      addWaterOz(val);
+      customInput.value = "";
+      customInput.blur();
+      
+      customAddBtn.style.transform = 'translateY(0) scale(0.95)';
+      setTimeout(() => {
+        customAddBtn.style.transform = '';
+      }, 150);
+    } else {
+      customInput.style.borderColor = '#ff6b6b';
+      customInput.style.boxShadow = '0 0 0 3px rgba(255, 107, 107, 0.2)';
+      setTimeout(() => {
+        customInput.style.borderColor = '';
+        customInput.style.boxShadow = '';
+      }, 1000);
+    }
+  });
+
+  customInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      customAddBtn.click();
+    }
+  });
+
+  resetBtn.addEventListener("click", () => {
+    intake = 0;
+    updateProgress();
+  });
+
+  settingsBtn.addEventListener("click", openSettings);
+  closeSettingsBtn.addEventListener("click", closeSettings);
+  settingsOverlay.addEventListener("click", closeSettings);
+
+  timeButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const hour = parseInt(btn.dataset.hour);
+      if (notificationHours.has(hour)) {
+        notificationHours.delete(hour);
+        btn.classList.remove('active');
+      } else {
+        notificationHours.add(hour);
+        btn.classList.add('active');
+      }
+    });
+  });
+
+  clearAllBtn.addEventListener("click", () => {
+    timeButtons.forEach(timeBtn => {
+      timeBtn.classList.remove('active');
+    });
+    notificationHours.clear();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && settingsPanel.classList.contains('active')) {
+      closeSettings();
+    }
+  });
+
+  updateProgress();
+})();
+
+// Register service worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log('SW registered: ', registration);
+      })
+      .catch(registrationError => {
+        console.log('SW registration failed: ', registrationError);
+      });
+  });
+}
+</script>
+</body>
+</html>
