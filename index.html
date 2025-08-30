@@ -3,76 +3,141 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Water Tracker PWA Clean Dark</title>
+<title>Hydrate - Water Tracker PWA</title>
+
+<!-- PWA Meta Tags -->
+<meta name="theme-color" content="#060a1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Hydrate">
+
+<!-- Icons -->
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-192x192.png">
+<link rel="icon" type="image/png" sizes="16x16" href="icons/icon-192x192.png">
+
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  
+  * {
+    box-sizing: border-box;
+  }
+
   body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    background-color: #111184;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(135deg, #020308 0%, #040815 50%, #060a1a 100%);
     color: #e6f0ff;
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
     align-items: center;
     justify-content: center;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 40% 80%, rgba(119, 198, 255, 0.2) 0%, transparent 50%);
+    pointer-events: none;
   }
 
   .container {
     text-align: center;
-    max-width: 320px;
-    padding: 28px 24px 32px 24px;
-    border-radius: 24px;
-    background: #1c2376;
-    box-shadow: 0 10px 40px rgba(153, 194, 255, 0.6);
+    max-width: 380px;
+    width: 100%;
+    padding: 40px 32px;
+    border-radius: 32px;
+    background: rgba(8, 12, 30, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(153, 194, 255, 0.1);
+    box-shadow: 
+      0 20px 60px rgba(0, 0, 0, 0.6),
+      0 8px 32px rgba(153, 194, 255, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
     user-select: none;
+    position: relative;
+  }
+
+  .container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 32px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+    pointer-events: none;
   }
 
   h1 {
-    margin-bottom: 28px;
+    margin-bottom: 40px;
     font-weight: 700;
-    font-size: 2rem;
+    font-size: 2.2rem;
+    background: linear-gradient(135deg, #ffffff 0%, #99c2ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+    position: relative;
+  }
+
+  .progress-container {
+    margin-bottom: 50px;
+    position: relative;
   }
 
   svg.progress-ring-svg {
-    margin-bottom: 40px;
-    filter: drop-shadow(0 4px 10px rgba(153, 194, 255, 0.8));
+    position: relative;
   }
 
   circle.background-ring {
-    stroke: white;
-    stroke-width: 8;
-    fill: white;
-    r: 40;
+    stroke: rgba(255, 255, 255, 0.05);
+    stroke-width: 10;
+    fill: none;
+    r: 45;
   }
 
   circle.progress-ring {
-    stroke: #99c2ff;
-    stroke-width: 9;
+    stroke: url(#progressGradient);
+    stroke-width: 10;
     fill: none;
     stroke-linecap: round;
-    transition: stroke-dashoffset 0.35s ease;
+    transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   text.progress-text {
-    fill: #111184;
-    font-size: 1.15rem;
+    fill: #ffffff;
+    font-size: 1.4rem;
     font-weight: 700;
-    letter-spacing: 0.6px;
+    letter-spacing: -0.02em;
   }
 
   text.progress-subtext {
-    fill: #555fad;
-    font-size: 0.45rem;
-    font-weight: 600;
-    letter-spacing: 0.6px;
+    fill: #8fa4d3;
+    font-size: 0.5rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    opacity: 0.8;
   }
 
   .buttons {
     display: flex;
     justify-content: center;
-    gap: 18px;
-    margin-bottom: 20px;
-    flex-wrap: nowrap;
+    gap: 16px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
   }
 
   .btn-container {
@@ -82,150 +147,486 @@
     align-items: center;
   }
 
-  button.option-btn,
-  button.custom-btn {
-    background-color: rgba(153, 194, 255, 0.2);
-    border: 1.8px solid #99c2ff;
-    border-radius: 26px;
-    padding: 6px 18px 8px 18px;
-    font-size: 1.05rem;
+  button.option-btn {
+    background: linear-gradient(135deg, rgba(153, 194, 255, 0.15) 0%, rgba(153, 194, 255, 0.05) 100%);
+    border: 1.5px solid rgba(153, 194, 255, 0.3);
+    border-radius: 20px;
+    padding: 16px 20px;
+    font-size: 1rem;
     font-weight: 600;
     color: #cce0ff;
-    box-shadow: 0 4px 16px rgba(153, 194, 255, 0.35);
-    backdrop-filter: blur(12px);
+    box-shadow: 
+      0 8px 24px rgba(0, 0, 0, 0.2),
+      0 4px 12px rgba(153, 194, 255, 0.1);
+    backdrop-filter: blur(16px);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     user-select: none;
-    min-width: 64px;
+    min-width: 80px;
     position: relative;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
     flex-direction: column;
-    row-gap: 4px;
+    gap: 8px;
+    transform: translateY(0);
   }
 
-  button.option-btn:hover,
-  button.option-btn:focus,
-  button.custom-btn:hover,
-  button.custom-btn:focus {
-    background-color: rgba(153, 194, 255, 0.45);
-    border-color: #e6f0ff;
-    outline: none;
+  button.option-btn:hover {
+    background: linear-gradient(135deg, rgba(153, 194, 255, 0.25) 0%, rgba(153, 194, 255, 0.15) 100%);
+    border-color: rgba(153, 194, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 
+      0 12px 32px rgba(0, 0, 0, 0.3),
+      0 6px 16px rgba(153, 194, 255, 0.2);
+  }
+
+  button.option-btn:active {
+    transform: translateY(0);
+    transition: transform 0.1s ease;
   }
 
   .waterdrops {
     display: flex;
-    gap: 2px;
+    gap: 3px;
     justify-content: center;
+    opacity: 0.8;
   }
 
   .waterdrop-icon {
-    width: 6px;
-    height: 9px;
-    fill: #cce0ff;
-    filter: drop-shadow(0 0 1.5px #80aaff);
+    width: 8px;
+    height: 12px;
+    fill: #99c2ff;
+    filter: drop-shadow(0 2px 4px rgba(153, 194, 255, 0.3));
+    animation: float 2s ease-in-out infinite;
+  }
+
+  .waterdrop-icon:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .waterdrop-icon:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  .waterdrop-icon:nth-child(4) {
+    animation-delay: 0.6s;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-3px); }
   }
 
   .custom-container {
-    margin-top: 12px;
+    margin-top: 24px;
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 16px;
+    align-items: center;
   }
 
   input.custom-input {
-    width: 110px;
-    padding: 12px 14px;
-    font-size: 1.15rem;
-    border-radius: 20px;
-    border: 1.8px solid #335577;
-    background-color: #1c2376;
+    width: 130px;
+    padding: 16px 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 16px;
+    border: 1.5px solid rgba(153, 194, 255, 0.3);
+    background: linear-gradient(135deg, rgba(153, 194, 255, 0.15) 0%, rgba(153, 194, 255, 0.05) 100%);
+    backdrop-filter: blur(16px);
     color: #cce0ff;
     text-align: center;
     outline: none;
-    font-weight: 700;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     user-select: text;
+    box-shadow: 
+      0 8px 24px rgba(0, 0, 0, 0.2),
+      0 4px 12px rgba(153, 194, 255, 0.1);
+    -moz-appearance: textfield;
+  }
+
+  input.custom-input::-webkit-outer-spin-button,
+  input.custom-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 
   input.custom-input::placeholder {
-    color: #5577aa;
+    color: rgba(153, 194, 255, 0.4);
+    font-weight: 500;
   }
 
   input.custom-input:focus {
-    border-color: #99c2ff;
+    border-color: rgba(153, 194, 255, 0.5);
+    box-shadow: 
+      0 0 0 3px rgba(153, 194, 255, 0.1),
+      0 12px 32px rgba(0, 0, 0, 0.3),
+      0 6px 16px rgba(153, 194, 255, 0.2);
+    background: linear-gradient(135deg, rgba(153, 194, 255, 0.25) 0%, rgba(153, 194, 255, 0.15) 100%);
   }
 
   button.custom-add {
-    background-color: #5577aa;
-    border: none;
-    border-radius: 20px;
-    padding: 12px 26px;
+    background: linear-gradient(135deg, rgba(153, 194, 255, 0.2) 0%, rgba(153, 194, 255, 0.1) 100%);
+    border: 1.5px solid rgba(153, 194, 255, 0.4);
+    border-radius: 16px;
+    padding: 16px 28px;
     font-size: 1rem;
-    font-weight: 700;
-    color: #e6f0ff;
+    font-weight: 600;
+    color: #cce0ff;
     cursor: pointer;
     user-select: none;
-    box-shadow: 0 5px 14px rgba(85, 119, 170, 0.75);
-    transition: background-color 0.3s ease;
+    box-shadow: 
+      0 8px 24px rgba(0, 0, 0, 0.2),
+      0 4px 12px rgba(153, 194, 255, 0.1);
+    backdrop-filter: blur(16px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
   }
 
-  button.custom-add:hover,
-  button.custom-add:focus {
-    background-color: #aac3ff;
-    color: #001f3f;
-    outline: none;
+  button.custom-add::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s;
+  }
+
+  button.custom-add:hover::before {
+    left: 100%;
+  }
+
+  button.custom-add:hover {
+    background: linear-gradient(135deg, rgba(153, 194, 255, 0.3) 0%, rgba(153, 194, 255, 0.2) 100%);
+    border-color: rgba(153, 194, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 
+      0 12px 32px rgba(0, 0, 0, 0.3),
+      0 6px 16px rgba(153, 194, 255, 0.2);
+  }
+
+  button.custom-add:active {
+    transform: translateY(0);
+  }
+
+  .celebration {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  .celebration.show {
+    animation: celebrate 1s ease-out;
+  }
+
+  @keyframes celebrate {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.5);
+    }
+    50% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  button.reset-btn {
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgba(153, 194, 255, 0.4);
+    cursor: pointer;
+    user-select: none;
+    margin-top: 24px;
+    transition: all 0.3s ease;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+  }
+
+  button.reset-btn:hover {
+    color: rgba(153, 194, 255, 0.7);
+    text-decoration-thickness: 1.5px;
+  }
+
+  button.reset-btn:active {
+    color: rgba(153, 194, 255, 0.5);
+  }
+
+  button.settings-btn {
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgba(153, 194, 255, 0.4);
+    cursor: pointer;
+    user-select: none;
+    margin-top: 8px;
+    transition: all 0.3s ease;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+  }
+
+  button.settings-btn:hover {
+    color: rgba(153, 194, 255, 0.7);
+    text-decoration-thickness: 1.5px;
+  }
+
+  button.settings-btn:active {
+    color: rgba(153, 194, 255, 0.5);
+  }
+
+  .settings-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .settings-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .settings-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 90%;
+    max-width: 480px;
+    max-height: 80vh;
+    background: rgba(8, 12, 30, 0.98);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(153, 194, 255, 0.2);
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: 
+      0 20px 60px rgba(0, 0, 0, 0.8),
+      0 8px 32px rgba(153, 194, 255, 0.1);
+    z-index: 1001;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+  }
+
+  .settings-panel.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .settings-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 32px;
+    position: relative;
+  }
+
+  .settings-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffffff 0%, #99c2ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .close-settings {
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    color: rgba(153, 194, 255, 0.6);
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    transition: color 0.3s ease;
+    position: absolute;
+    right: 0;
+  }
+
+  .close-settings:hover {
+    color: rgba(153, 194, 255, 0.9);
+  }
+
+  .section-label {
+    margin: 0 0 12px 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .notification-note {
+    margin: 0 0 20px 0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgba(255, 220, 107, 0.8);
+    text-align: center;
+    background: rgba(255, 220, 107, 0.08);
+    border: 1px solid rgba(255, 220, 107, 0.15);
+    border-radius: 12px;
+    padding: 10px 16px;
+  }
+
+  .time-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .time-btn {
+    background: linear-gradient(135deg, rgba(153, 194, 255, 0.1) 0%, rgba(153, 194, 255, 0.05) 100%);
+    border: 1px solid rgba(153, 194, 255, 0.2);
+    border-radius: 12px;
+    padding: 12px 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(153, 194, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+  }
+
+  .time-btn:hover {
+    background: linear-gradient(135deg, rgba(153, 194, 255, 0.15) 0%, rgba(153, 194, 255, 0.1) 100%);
+    border-color: rgba(153, 194, 255, 0.3);
+    color: rgba(153, 194, 255, 0.9);
+  }
+
+  .time-btn.active {
+    background: linear-gradient(135deg, rgba(153, 194, 255, 0.3) 0%, rgba(153, 194, 255, 0.2) 100%);
+    border-color: rgba(153, 194, 255, 0.5);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(153, 194, 255, 0.2);
+  }
+
+  .clear-all-btn {
+    width: 100%;
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.15) 0%, rgba(220, 38, 127, 0.15) 100%);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    border-radius: 16px;
+    padding: 16px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: rgba(255, 107, 107, 0.9);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+  }
+
+  .clear-all-btn:hover {
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.25) 0%, rgba(220, 38, 127, 0.25) 100%);
+    border-color: rgba(255, 107, 107, 0.5);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.2);
+  }
+
+  @media (max-width: 480px) {
+    .container {
+      max-width: 340px;
+      padding: 32px 24px;
+    }
+    
+    h1 {
+      font-size: 2rem;
+    }
+    
+    .buttons {
+      gap: 12px;
+    }
+    
+    button.option-btn {
+      min-width: 70px;
+      padding: 12px 16px;
+    }
   }
 </style>
 </head>
 <body>
-  <div class="container" role="main" aria-label="Water Tracker Dark Mode Clean">
-    <h1>Water Tracker</h1>
+  <div class="container" role="main" aria-label="Enhanced Water Tracker">
+    <h1>💧 Hydrate</h1>
 
-    <!-- Progress Ring -->
-    <svg
-      class="progress-ring-svg"
-      width="200"
-      height="200"
-      viewBox="0 0 100 100"
-      aria-label="Daily water intake progress"
-      role="img"
-    >
-      <circle
-        class="background-ring"
-        cx="50"
-        cy="50"
-        r="40"
-      ></circle>
-      <circle
-        class="progress-ring"
-        cx="50"
-        cy="50"
-        r="45"
-        stroke-dasharray="282.743"
-        stroke-dashoffset="282.743"
-      ></circle>
-      <text
-        class="progress-text"
-        x="50"
-        y="37"
-        text-anchor="middle"
-        dominant-baseline="central"
+    <div class="progress-container">
+      <svg
+        class="progress-ring-svg"
+        width="220"
+        height="220"
+        viewBox="0 0 100 100"
+        aria-label="Daily water intake progress"
+        role="img"
       >
-        0 oz
-      </text>
-      <text
-        class="progress-subtext"
-        x="50"
-        y="58"
-        text-anchor="middle"
-        dominant-baseline="central"
-      >
-        out of 100 oz
-      </text>
-    </svg>
+        <defs>
+          <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#60a5fa;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <circle
+          class="background-ring"
+          cx="50"
+          cy="50"
+          r="45"
+        ></circle>
+        <circle
+          class="progress-ring"
+          cx="50"
+          cy="50"
+          r="45"
+          stroke-dasharray="282.743"
+          stroke-dashoffset="282.743"
+        ></circle>
+        <text
+          class="progress-text"
+          x="50"
+          y="37"
+          text-anchor="middle"
+          dominant-baseline="central"
+        >
+          0 oz
+        </text>
+        <text
+          class="progress-subtext"
+          x="50"
+          y="58"
+          text-anchor="middle"
+          dominant-baseline="central"
+        >
+          out of 100 oz
+        </text>
+      </svg>
+    </div>
 
     <div class="buttons" role="group" aria-label="Add water amount">
       <div class="btn-container">
@@ -278,14 +679,59 @@
         type="number"
         min="1"
         step="1"
-        placeholder="Custom oz"
+        placeholder="Custom"
         aria-label="Enter custom water amount in ounces"
       />
       <button class="custom-add" aria-label="Add custom water amount" type="button">
         Add
       </button>
     </div>
+
+    <button class="reset-btn" aria-label="Reset daily progress" type="button">
+      Reset Day
+    </button>
+
+    <button class="settings-btn" aria-label="Open settings" type="button">
+      ⚙️ Settings
+    </button>
+
+    <div class="settings-panel" id="settingsPanel">
+      <div class="settings-header">
+        <h3>Settings</h3>
+        <button class="close-settings" aria-label="Close settings">&times;</button>
+      </div>
+      
+      <div class="notification-section">
+        <p class="section-label">Choose times to get reminders and update your progress:</p>
+        <p class="notification-note">Enable push notifications in your device settings for this to work</p>
+        <div class="time-grid">
+          <button class="time-btn" data-hour="6" type="button">6 AM</button>
+          <button class="time-btn" data-hour="7" type="button">7 AM</button>
+          <button class="time-btn" data-hour="8" type="button">8 AM</button>
+          <button class="time-btn" data-hour="9" type="button">9 AM</button>
+          <button class="time-btn" data-hour="10" type="button">10 AM</button>
+          <button class="time-btn" data-hour="11" type="button">11 AM</button>
+          <button class="time-btn" data-hour="12" type="button">12 PM</button>
+          <button class="time-btn" data-hour="13" type="button">1 PM</button>
+          <button class="time-btn" data-hour="14" type="button">2 PM</button>
+          <button class="time-btn" data-hour="15" type="button">3 PM</button>
+          <button class="time-btn" data-hour="16" type="button">4 PM</button>
+          <button class="time-btn" data-hour="17" type="button">5 PM</button>
+          <button class="time-btn" data-hour="18" type="button">6 PM</button>
+          <button class="time-btn" data-hour="19" type="button">7 PM</button>
+          <button class="time-btn" data-hour="20" type="button">8 PM</button>
+          <button class="time-btn" data-hour="21" type="button">9 PM</button>
+          <button class="time-btn" data-hour="22" type="button">10 PM</button>
+          <button class="time-btn" data-hour="23" type="button">11 PM</button>
+        </div>
+        <button class="clear-all-btn" data-preset="clear" type="button">Clear All</button>
+      </div>
+    </div>
+
+    <div class="settings-overlay" id="settingsOverlay"></div>
   </div>
+
+  <div class="celebration">🎉</div>
 
 <script>
   (function () {
@@ -296,48 +742,4 @@
 
     const progressRing = document.querySelector("circle.progress-ring");
     const progressText = document.querySelector("text.progress-text");
-    const circumference = 2 * Math.PI * 45;
-
-    progressRing.style.strokeDasharray = circumference;
-    progressRing.style.strokeDashoffset = circumference;
-
-    const buttons = document.querySelectorAll("button.option-btn");
-    const customInput = document.querySelector("input.custom-input");
-    const customAddBtn = document.querySelector("button.custom-add");
-
-    function updateProgress() {
-      const progress = intake / dailyGoal;
-      const offset = circumference * (1 - progress);
-      progressRing.style.strokeDashoffset = offset;
-      const intakeOz = Math.round(intake / mlPerOz);
-      progressText.textContent = intakeOz + " oz";
-    }
-
-    function addWaterOz(oz) {
-      if (oz <= 0 || isNaN(oz)) return;
-      intake = Math.min(intake + oz * mlPerOz, dailyGoal);
-      updateProgress();
-    }
-
-    buttons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const oz = parseInt(btn.getAttribute("data-oz"), 10);
-        addWaterOz(oz);
-      });
-    });
-
-    customAddBtn.addEventListener("click", () => {
-      const val = parseInt(customInput.value, 10);
-      if (!isNaN(val) && val > 0) {
-        addWaterOz(val);
-        customInput.value = "";
-      } else {
-        alert("Please enter a positive whole number.");
-      }
-    });
-
-    updateProgress();
-  })();
-</script>
-</body>
-</html>
+    const celebration = document.
