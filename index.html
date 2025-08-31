@@ -738,7 +738,7 @@
   const dailyGoalOunces = 100;
   const mlPerOz = 29.5735;
   const dailyGoal = dailyGoalOunces * mlPerOz;
-  let intake = 0;
+  let intake = parseInt(localStorage.getItem('dailyIntake') || '0');
 
   const progressRing = document.querySelector("circle.progress-ring");
   const progressText = document.querySelector("text.progress-text");
@@ -768,6 +768,7 @@
     
     const intakeOz = Math.round(intake / mlPerOz);
     progressText.textContent = intakeOz + " oz";
+    localStorage.setItem('dailyIntake', intake);
     
     if (progress >= 1 && intake > 0) {
       showCelebration();
@@ -846,9 +847,10 @@
   });
 
   resetBtn.addEventListener("click", () => {
-    intake = 0;
-    updateProgress();
-  });
+  intake = 0;
+  localStorage.setItem('dailyIntake', 0);
+  updateProgress();
+});
 
   settingsBtn.addEventListener("click", openSettings);
   closeSettingsBtn.addEventListener("click", closeSettings);
